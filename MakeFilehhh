@@ -1,0 +1,6 @@
+prog:image10.o main10.o
+	gcc image10.o main10.o -o prog
+main10.o:main10.c
+	gcc -c main10.c
+image10.o:image10.c
+	gcc -c image10.c
