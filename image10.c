@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include<SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
-
+#include<math.h>
 
 
 
@@ -129,9 +129,9 @@ A->img=IMG_Load("///home/ubuntu123/Desktop/projet/hateplay.jpg");
       perso->score.position.x=50;
       perso->score.position.y=50;
       
-      perso->score.textColor.r=0;
-      perso->score.textColor.g=0;
-      perso->score.textColor.b=0;
+      perso->score.textColor.r=255;
+      perso->score.textColor.g=255;
+      perso->score.textColor.b=255;
           
 perso->score.font= TTF_OpenFont("///home/ubuntu123/Downloads/Condensed.ttf",40);
       }
@@ -153,9 +153,9 @@ perso->score.font= TTF_OpenFont("///home/ubuntu123/Downloads/Condensed.ttf",40);
       perso->vies.position.x=500;
       perso->vies.position.y=50;
       
-      perso->vies.textColor.r=0;
-      perso->vies.textColor.g=0;
-      perso->vies.textColor.b=0;
+      perso->vies.textColor.r=255;
+      perso->vies.textColor.g=255;
+      perso->vies.textColor.b=255;
           
 perso->vies.font= TTF_OpenFont("///home/ubuntu123/Downloads/Condensed.ttf",40);
       }
@@ -177,46 +177,46 @@ perso->vies.font= TTF_OpenFont("///home/ubuntu123/Downloads/Condensed.ttf",40);
        
        if ((perso.num == 0) && (perso.direction==0)) 
       {
-        SDL_BlitSurface(perso.mat[0][0],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[0][0],NULL,screen,&perso.pos1);
       }
     if ((perso.num == 1) && ( perso.direction == 0))
       {
-        SDL_BlitSurface(perso.mat[0][1],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[0][1],NULL,screen,&perso.pos1);
       }
     if ((perso.num == 2) && (perso.direction == 0))
       {     
-        SDL_BlitSurface(perso.mat[0][2],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[0][2],NULL,screen,&perso.pos1);
       }  
     if ((perso.num == 3) && (perso.direction == 0))
       {
-        SDL_BlitSurface(perso.mat[0][3],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[0][3],NULL,screen,&perso.pos1);
       }  
     if ((perso.num == 4) && (perso.direction ==0))
       {
-        SDL_BlitSurface(perso.mat[0][4],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[0][4],NULL,screen,&perso.pos1);
       }
       
       
       
        if ((perso.num == 0) && (perso.direction==1)) 
       {
-        SDL_BlitSurface(perso.mat[1][0],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[1][0],NULL,screen,&perso.pos1);
       }
     if ((perso.num == 1) && ( perso.direction == 1))
       {
-        SDL_BlitSurface(perso.mat[1][1],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[1][1],NULL,screen,&perso.pos1);
       }
     if ((perso.num == 2) && (perso.direction == 1))
       {     
-        SDL_BlitSurface(perso.mat[1][2],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[1][2],NULL,screen,&perso.pos1);
       }  
     if ((perso.num == 3) && (perso.direction == 1))
       {
-        SDL_BlitSurface(perso.mat[1][3],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[1][3],NULL,screen,&perso.pos1);
       }  
     if ((perso.num == 4) && (perso.direction ==1))
       {
-        SDL_BlitSurface(perso.mat[1][4],NULL,screen,&(perso.pos1.x));
+        SDL_BlitSurface(perso.mat[1][4],NULL,screen,&perso.pos1);
       }
       
        
@@ -257,6 +257,7 @@ perso->vies.font= TTF_OpenFont("///home/ubuntu123/Downloads/Condensed.ttf",40);
   initvies(&(*perso));
   perso->direction=0;
   perso->num=0;
+  perso->speed=0;
   perso->etat=0;
   perso->mat[0][0]=IMG_Load("///home/ubuntu123/Desktop/projet/sprite11.png");
   perso->mat[0][1]=IMG_Load("///home/ubuntu123/Desktop/projet/sprite22.png");
@@ -275,6 +276,79 @@ perso->vies.font= TTF_OpenFont("///home/ubuntu123/Downloads/Condensed.ttf",40);
   
   }}
   
+  void saut(Personnage *perso,int posx, int posy)
+  {
+    
+    // La position relative de Mario
+    
+    
+      
+    
+
+    // Boucle principale du programme
+    
+     
+        // EVOLUTION
+            //On avance de 1
+            perso->pos2.x++;
+
+            
+
+            //On met à "0" les pos abs:
+            perso->pos1.x = posx ;
+            perso->pos1.y = posy ;
+            
+
+            //On calcule la valeur relative de y:
+          perso->pos2.y=(-0.04*(perso->pos2.x*perso->pos2.x)+95.5555555555555555555555);
+
+            //On calcule maintenant les valeurs abs
+            perso->pos1.x = perso->pos1.x + perso->pos2.x +50;
+            perso->pos1.y = perso->pos1.y - perso->pos2.y;
+
+
+if(perso->pos2.x>=50)
+            {
+                
+                perso->pos2.x=-50;
+                perso->pos1.x=-100; 
+                 
+            }
+        //Intervalle de 10ms
+        SDL_Delay(10);
+
+        // FIN EVOLUTION
+
+        
+    
+      
+         
+  }
+  
+  void deplacer(Personnage *perso)
+  {
+    if ((perso->direction == 0 ) && ( perso->speed == 0))
+     {
+       perso->pos1.x += 20; 
+     }
+    else if (( perso->direction == 1) && ( perso->speed == 0))
+    {
+       perso->pos1.x -= 20;
+    }
+    
+    if ((perso->direction == 0) && ( perso->speed ==1 ))
+     {
+       perso->pos1.x += 40; 
+     }
+    else if (( perso->direction == 1) && ( perso->speed == 1))
+    {
+       perso->pos1.x -= 40;
+    }
+    
+    
+    
+    
+  }
   void initPersoleft(Personnage *perso)
 {
      perso->persoimg=IMG_Load("///home/ubuntu123/Desktop/projet/spriteleft.jpg");
@@ -377,7 +451,7 @@ A->img=IMG_Load("///home/ubuntu123/Desktop/projet/hatequit.jpg");
    void initNewPlay(Image *NewPlayBackg)
   {
 
- NewPlayBackg->img=IMG_Load("///home/ubuntu123/Desktop/projet/farm.jpg");
+NewPlayBackg->img=IMG_Load("///home/ubuntu123/Downloads/2ndback.v4.jpg");
        if (NewPlayBackg->img==NULL) 
        { 
          printf("unable to load jpg : %s \n",SDL_GetError());

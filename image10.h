@@ -35,6 +35,8 @@ struct Personnage {
       int num;
       int etat;
       SDL_Surface *mat[10][10];
+      int fin;
+      int speed;
       
     };
 typedef struct Personnage Personnage;
@@ -42,7 +44,7 @@ typedef struct Personnage Personnage;
 
 
 
-
+void deplacer(Personnage *perso);
 void initPlayButton(Image *A);
 void initOptionsButton(Image *A);
 void initQuitButton(Image *A);
@@ -79,6 +81,7 @@ void initVolume1(Image *A);
           void displayvies(Personnage perso, SDL_Surface *screen);
           void initPersoleft(Personnage *perso);
  void animerPerso(Personnage *perso);
+   void saut(Personnage *perso,int posx,int posy);
 #endif
 
 

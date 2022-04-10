@@ -36,14 +36,21 @@ int main(int argc, char** argv)
    printf("%s \n",Mix_GetError());
    }
    Mix_Music *music;
-   music=Mix_LoadMUS("///home/ubuntu123/Desktop/projet/sallyface.mp3");
+   music=Mix_LoadMUS("///home/ubuntu123/Downloads/sally_face_ost_home_-8058600635889522696.mp3");
    if (casson==3)
    {
    Mix_PlayMusic(music,-1); 
    }
    /////////
    
-    
+    if(Mix_OpenAudio( 48000,MIX_DEFAULT_FORMAT,2,6555158)==-1)
+   {
+   printf("%s \n",Mix_GetError());
+   }
+   Mix_Music *music1;
+   music1=Mix_LoadMUS("///home/ubuntu123/Downloads/sally_face_empty_hallways_extended_ost_-3535982612414536619.mp3");
+   
+   
     
     ///////
    Mix_Chunk *son;
@@ -93,6 +100,7 @@ int main(int argc, char** argv)
          SDL_Flip(screen);
          
            }
+           /*
       ///////// tries
       SDL_Surface* fond = IMG_Load("///home/ubuntu123/Desktop/projet/sally5.jpg");
       SDL_Surface* mario = IMG_Load("///home/ubuntu123/Desktop/projet/sprite11.png");
@@ -105,7 +113,7 @@ int main(int argc, char** argv)
     // La position absolue de Mario
     SDL_Rect posMarioAbs;
     posMarioAbs.x = 200;
-    posMarioAbs.y = 300-(mario->h);
+    posMarioAbs.y = 170 ;
 
     // La position relative de Mario
     SDL_Rect posMarioRel;
@@ -142,21 +150,21 @@ int main(int argc, char** argv)
             //On avance de 1
             posMarioRel.x++;
 
-            if(posMarioRel.x>=50)
+           if(posMarioRel.x>=50)
             {
                 posMarioRel.x=-50;
-            }
+            }  
 
             //On met à "0" les pos abs:
             posMarioAbs.x = 200;
-            posMarioAbs.y = 300-(mario->h);
+            posMarioAbs.y = 170 ;
 
             //On calcule la valeur relative de y:
             posMarioRel.y=(-0.04*(posMarioRel.x*posMarioRel.x)+100);
 
             //On calcule maintenant les valeurs abs
             posMarioAbs.x = posMarioAbs.x + posMarioRel.x+50;
-            posMarioAbs.y = posMarioAbs.y - posMarioRel.y;
+           posMarioAbs.y = posMarioAbs.y - posMarioRel.y;  
 
         //Intervalle de 10ms
         SDL_Delay(10);
@@ -180,7 +188,18 @@ int main(int argc, char** argv)
       
       
       ///////// tries 
-                  SDL_EnableKeyRepeat(150,150);
+      
+      */
+      int fin=0;
+      int posx=0, posy=0;
+     perso.pos2.x = -50;
+    perso.pos2.y = 0;
+    
+    perso.pos1.x = 200;
+     perso.pos1.y = 170;
+     
+     
+                  SDL_EnableKeyRepeat(100,100);
                   
             SDL_bool program_launched = SDL_TRUE;
             
@@ -261,6 +280,9 @@ int main(int argc, char** argv)
          if (((124<event.button.x)&&(event.button.x<215))&&  ((150<event.button.y)&&(event.button.y<196)))
                {
                    afficher(NewPlayBackg,screen);
+                   afficherPerso(perso,screen);
+                   displayscore(perso,screen);
+                     displayvies(perso,screen); 
                      SDL_Flip(screen);    
                     trouve=0;
                }  
@@ -437,15 +459,35 @@ int main(int argc, char** argv)
                          break;
                          
                          
-                         /* 
-                         case SDLK_z :
-                          p.direction=0;
-                          p.stop=1;
-                          deplacer_perso(&p);
-                          afficherPerso(p,screen);
+                       
+                         case SDLK_UP :
+                      if (trouve==0)
+                         
+                           {
+                       fin=0;
+    while (!fin)
+    {    
+      
+                          afficher(NewPlayBackg,screen);
+                          
+                          saut(&perso,posx,posy);
+                          
+                          displayscore(perso,screen);
+                    displayvies(perso,screen);
+                    afficherPerso(perso,screen);
+                         
                          SDL_Flip(screen);
+                         if (perso.pos2.x == 49)
+                         {
+                         fin=1;
+                         }
+                         
+                         
+                         }
+                         }
+                         
                          break;
-                         */
+                         
                          
                           case SDLK_s :
                           if(trouve==1){
@@ -462,17 +504,24 @@ int main(int argc, char** argv)
                          if (trouve==0)
                          
                            {
+                           fin =1;
+                           perso.speed=0;
+                            afficher(NewPlayBackg,screen);
+                             displayscore(perso,screen);
+                    displayvies(perso,screen);
                            perso.direction=0;
-                           perso.pos1.x += 20; 
-                           
-                           afficher(NewPlayBackg,screen);
+                          deplacer(&perso);
+                       posx= perso.pos1.x;       
+                         posy= perso.pos1.y;     
+                          
     
                            animerPerso(&perso);
                            afficherPerso(perso,screen);
                    /* afficherPerso(perso,screen); */
-                    displayscore(perso,screen);
-                    displayvies(perso,screen);
+                   
                          SDL_Flip(screen); 
+                        
+                          
                          }
                          
                          
@@ -481,29 +530,41 @@ int main(int argc, char** argv)
                          case SDLK_LEFT:
                          if (trouve==0)  
                          {
+                         fin =1;
+                         perso.speed=0;
+                          afficher(NewPlayBackg,screen);
+                            displayscore(perso,screen);
+                     displayvies(perso,screen); 
                          perso.direction = 1;
-                           perso.pos1.x -= 20; 
-                            
-                           afficher(NewPlayBackg,screen);
+                        deplacer(&perso);
+                          posx= perso.pos1.x;       
+                         posy= perso.pos1.y;   
+                          
                            animerPerso(&perso);
                     afficherPerso(perso,screen);
-                     displayscore(perso,screen);
-                     displayvies(perso,screen); 
+                   
                          SDL_Flip(screen); 
+                        
+                          
                          }
                          break;
                    
                      case SDLK_r:
                          if (trouve==0)  
                          {
+                         afficher(NewPlayBackg,screen);
+                          displayscore(perso,screen);
+                     displayvies(perso,screen); 
                          perso.direction = 0;
-                           perso.pos1.x += 60; 
-                            
-                           afficher(NewPlayBackg,screen);
+                         perso.speed=1;
+                          deplacer(&perso); 
+                         
+                         posx= perso.pos1.x;
+                         posy= perso.pos1.y;   
+                           
                            animerPerso(&perso);
                     afficherPerso(perso,screen);
-                     displayscore(perso,screen);
-                     displayvies(perso,screen); 
+                    
                          SDL_Flip(screen); 
                          }
                          break;
@@ -511,14 +572,20 @@ int main(int argc, char** argv)
                     case SDLK_l:
                          if (trouve==0)  
                          {
+                          afficher(NewPlayBackg,screen);
+                           displayscore(perso,screen);
+                     displayvies(perso,screen); 
                          perso.direction = 1;
-                           perso.pos1.x -= 60; 
-                            
-                           afficher(NewPlayBackg,screen);
+                         perso.speed=1;
+                         deplacer(&perso);
+                      
+                      posx= perso.pos1.x;
+                         posy= perso.pos1.y;
+                               
+                          
                            animerPerso(&perso);
                     afficherPerso(perso,screen);
-                     displayscore(perso,screen);
-                     displayvies(perso,screen); 
+                    
                          SDL_Flip(screen); 
                          }
                          break;
@@ -532,9 +599,11 @@ int main(int argc, char** argv)
                       case SDLK_p :
                   
                    if (trouve==1)  {
+                   Mix_PlayMusic(music1,-1); 
                        afficher(NewPlayBackg,screen); 
                         displayscore(perso,screen);
-                    displayvies(perso,screen);                   
+                    displayvies(perso,screen); 
+                    afficherPerso(perso,screen);                  
                           SDL_Flip(screen);  
                             
                           }
@@ -704,6 +773,7 @@ int main(int argc, char** argv)
              liberer(Volume2);
              liberer(Volume3);
              libererPerso(perso);
+             
             
      
              return 0;
